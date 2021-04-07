@@ -10,7 +10,8 @@ import (
 func main() {
 
 	addr := models.Address{}
-	err := addr.Fill("01452-000")
+	zip := "01452-000"
+	err := addr.Fill(&zip)
 	if err != nil {
 		log.Panic(err)
 	}

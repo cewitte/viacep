@@ -25,9 +25,9 @@ type Address struct {
 	Siafi       string `json:"siafi"`
 }
 
-func (a *Address) Fill(cep string) error {
+func (a *Address) Fill(cep *string) error {
 	// Clean zip code first.
-	zipcode := cepcleaners.ExtractNumbers(cep)
+	zipcode := cepcleaners.ExtractNumbers(*cep)
 
 	URL = strings.Replace(URL, "zipcode", zipcode, -1)
 	method := "GET"
