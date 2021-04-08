@@ -27,9 +27,9 @@ type Address struct {
 
 func New(cep *string) (*Address, error) {
 	// Clean zip code first.
-	zipcode := cepcleaners.ExtractNumbers(*cep)
+	*cep = cepcleaners.ExtractNumbers(*cep)
 
-	URL = strings.Replace(URL, "zipcode", zipcode, -1)
+	URL = strings.Replace(URL, "zipcode", *cep, -1)
 	method := "GET"
 
 	client := &http.Client{}
