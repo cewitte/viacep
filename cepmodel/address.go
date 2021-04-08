@@ -1,4 +1,4 @@
-package models
+package cepmodel
 
 import (
 	"encoding/json"
@@ -25,7 +25,7 @@ type Address struct {
 	Siafi       string `json:"siafi"`
 }
 
-func (a *Address) Fill(cep *string) error {
+func New(cep *string) (*Address, error) {
 	// Clean zip code first.
 	zipcode := cepcleaners.ExtractNumbers(*cep)
 
@@ -36,24 +36,26 @@ func (a *Address) Fill(cep *string) error {
 	req, err := http.NewRequest(method, URL, nil)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	res, err := client.Do(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		fmt.Println(err)
-		return err
-	}
-	err = json.Unmarshal(body, &a)
-	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	var addr Address
+	err = json.Unmarshal(body, &addr)
+	if err != nil {
+		return nil, err
+	}
+
+	return &addr, nil
 }

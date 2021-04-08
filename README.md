@@ -11,7 +11,7 @@ go get -u github.com/cewitte/viacep
 ### Execução
 
 ```
-go run main.go
+go run main.go -cep="01452-000"
 ```
 
 ### Para clonar o repositório

@@ -1,17 +1,18 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 
-	"github.com/cewitte/viacep/models"
+	"github.com/cewitte/viacep/cepmodel"
 )
 
 func main() {
+	zip := flag.String("cep", "01452-000", "-cep=\"01452-000\"")
+	flag.Parse()
+	addr, err := cepmodel.New(zip)
 
-	addr := models.Address{}
-	zip := "01452-000"
-	err := addr.Fill(&zip)
 	if err != nil {
 		log.Panic(err)
 	}
