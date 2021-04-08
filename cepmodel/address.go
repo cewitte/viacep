@@ -10,9 +10,9 @@ import (
 	"github.com/cewitte/viacep/cepcleaners"
 )
 
-var URL = "https://viacep.com.br/ws/zipcode/json/"
+var viacepURL = "https://viacep.com.br/ws/zipcode/json/"
 
-type Address struct {
+type ViaCepAddress struct {
 	Cep         string `json:"cep"`
 	Logradouro  string `json:"logradouro"`
 	Complemento string `json:"complemento"`
@@ -25,15 +25,15 @@ type Address struct {
 	Siafi       string `json:"siafi"`
 }
 
-func New(cep *string) (*Address, error) {
+func New(cep *string) (*ViaCepAddress, error) {
 	// Clean zip code first.
 	*cep = cepcleaners.ExtractNumbers(*cep)
 
-	URL = strings.Replace(URL, "zipcode", *cep, -1)
+	customURL := strings.Replace(viacepURL, "zipcode", *cep, -1)
 	method := "GET"
 
 	client := &http.Client{}
-	req, err := http.NewRequest(method, URL, nil)
+	req, err := http.NewRequest(method, customURL, nil)
 
 	if err != nil {
 		return nil, err
@@ -51,7 +51,7 @@ func New(cep *string) (*Address, error) {
 		return nil, err
 	}
 
-	var addr Address
+	var addr ViaCepAddress
 	err = json.Unmarshal(body, &addr)
 	if err != nil {
 		return nil, err
