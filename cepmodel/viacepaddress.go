@@ -25,7 +25,7 @@ type ViaCepAddress struct {
 	Siafi       string `json:"siafi"`
 }
 
-func New(cep *string) (*ViaCepAddress, error) {
+func NewAddressFromCEP(cep *string) (*ViaCepAddress, error) {
 	// Clean zip code first.
 	*cep = cepcleaners.ExtractNumbers(*cep)
 
